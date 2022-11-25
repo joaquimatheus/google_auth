@@ -17,4 +17,8 @@ CREATE TABLE users (
     primary_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     email TEXT NOT NULL
+
+    utc_created_on TIMESTAMP NOT NULL
+        CONSTRAINT df_users_utc_created_onn DEFAULT(now())
 );
+ALTER SEQUENCE seq_users OWNED BY users.id;
