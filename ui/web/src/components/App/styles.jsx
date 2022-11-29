@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const StyledApp = styled.div`
     height: 100vh;
-    background: linear-gradient(239.26deg, var(--bg-first), var(--bg-second))
+    background: linear-gradient(239.26deg, var(--bg-first), var(--bg-second));
     display: flex;
     flex-direction: column;
 
@@ -10,7 +10,6 @@ export const StyledApp = styled.div`
         padding: 20px;
     }
 `
-
 
 export const Nav = styled.ul`
     list-style: none;
