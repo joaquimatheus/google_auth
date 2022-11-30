@@ -12,6 +12,7 @@ import { useTheme } from '../../themes/useTheme'
 import Login from '../../pages/Login'
 
 import ThemePicker from '../ThemePicker'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 function App() {
     const localThemes = getFromLocalStorage("all-themes")
@@ -34,19 +35,21 @@ function App() {
     return (
         <>
             {themeLoaded && (
-                <ThemeProvider theme={selectedTheme} >
-                    <GlobalStyles />
-                    <StyledApp>
-                        <header>
-                            <Nav>
-                                <ThemePicker themeSetter={setSelectedTheme} />
-                            </Nav>
-                        </header>
-                        <Routes>
-                            <Route path="/" element={ <Login /> }/>
-                        </Routes>
-                    </StyledApp>
-                </ThemeProvider >
+                <GoogleOAuthProvider clientId="970275515164-i13mjqsbta13hg9paobo7bnt51ov4h32.apps.googleusercontent.com">
+                    <ThemeProvider theme={selectedTheme} >
+                        <GlobalStyles />
+                        <StyledApp>
+                            <header>
+                                <Nav>
+                                    <ThemePicker themeSetter={setSelectedTheme} />
+                                </Nav>
+                            </header>
+                            <Routes>
+                                <Route path="/" element={ <Login /> }/>
+                            </Routes>
+                        </StyledApp>
+                    </ThemeProvider >
+                </GoogleOAuthProvider>
             )}
         </>
     )

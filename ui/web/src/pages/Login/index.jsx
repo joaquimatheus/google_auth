@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react';
 import { getFromLocalStorage, setToLocalStorage } from '../../helpers/storage'
 import { Navigate, useNavigate } from 'react-router-dom';
 import { FormInput, LogoContainer, StyledLogin } from './styles'
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 
 const Login = () => {
     const loggedIn = getFromLocalStorage("login-state")
@@ -32,6 +33,14 @@ const Login = () => {
                     name="password"
                     placeholder="Password"
                     required
+                />
+                <GoogleLogin
+                    onSuccess={credentialResponse => {
+                        console.log(credentialResponse)
+                    }}
+                    onError={() => {
+                        console.log("login failed")
+                    }}
                 />
                 <button type="submit">Login</button>
             </form>
