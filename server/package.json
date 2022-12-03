@@ -14,5 +14,8 @@
     "mariadb": "^3.0.2",
     "mysql2": "^2.3.3",
     "sequelize": "^6.26.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.5.2"
   }
 }
