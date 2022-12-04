@@ -11,7 +11,22 @@ const Register = () => {
     const loggedIn = getFromLocalStorage("login-state") 
     const Navigate = useNavigate()
 
-    const onSubmit = data => console.log(data);
+    const onSubmit = async data => {
+        const response = await fetch(`http://localhost:4000/api/v1/users`, {
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+
+        const jsonResponse = await response.json();
+
+        console.log(data);
+
+        console.log(jsonResponse)
+    }
 
     /*
     const registerHandler = (ev) => {
@@ -34,30 +49,31 @@ const Register = () => {
 
                 <h1>register new user_</h1>
 
+                {errors.username?.type === 'required' && <p role="alert">Username is required</p>}
                 <FormInput 
                     type="text" 
                     placeholder="username"
                     {...register('username', { required: true })}
                     aria-invalid={errors.username ? "true" : "false"}
                 />
-                {errors.username?.type === 'required' && <p role="alert">Username is required</p>}
 
+                {errors.email?.type === 'required' && <p role="alert">Email is required</p>}
                 <FormInput 
                     type="email" 
                     placeholder="email" 
                     {...register('email', { required: true })}
                     aria-invalid={errors.email ? "true" : "false" }
                 />
-                {errors.email?.type === 'required' && <p role="alert">Email is required</p>}
 
+                {errors.password?.type === 'required' && <p role="alert">Password is required</p>}
                 <FormInput
                     type="password"
                     placeholder="password"
                     {...register('password', { required: true })}
                     aria-invalid={errors.password ? "true" : "false" }
                 />
-                {errors.password?.type === 'required' && <p role="alert">Passwrod is required</p>}
 
+                {errors.confirm_password?.type === 'required' && <p role="alert">Confirm Password is required</p>}
                 <FormInput 
                     type="password"
                     name="confirm_password"
@@ -65,7 +81,6 @@ const Register = () => {
                     placeholder="Confirm Password"
                     aria-invalid={errors.confirm_password ? "true" : "false"}
                 />
-                {errors.confirm_password?.type === 'required' && <p role="alert">Confirm Password is required</p>}
 
                 <button type="submit">Register</button>
             </form>
