@@ -23,6 +23,11 @@ export const StyledRegister = styled.div`
         text-align: center
     }
 
+    form p {
+        font-weight: bold;
+        color: hsla(355.5, 78%, 56%, 70%);
+    }
+
     button {
         padding: 15px 20px;
         border-radius: 6px;
