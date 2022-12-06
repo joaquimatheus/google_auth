@@ -6,7 +6,7 @@ import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 
 const Login = () => {
     const loggedIn = getFromLocalStorage("login-state")
-    const Navigate = useNavigate()
+    const navigate = useNavigate()
 
     const loginHandler = (ev) => {
         ev.preventDefault()
@@ -14,12 +14,12 @@ const Login = () => {
         const formData = new FormData(ev.target)
 
         setToLocalStorage('login-state', true)
-        navigate("/", { replace: true })
+        navigate("/welcome", { replace: true })
     }
 
     return (
         <StyledLogin>
-            {loggedIn && <Navigate to="/" replace />}
+            {loggedIn && <Navigate to="/welcome" replace />}
             <LogoContainer>
                 <img src="logo.png" alt="Wysa Logo"/>
             </LogoContainer>
