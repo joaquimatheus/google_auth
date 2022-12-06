@@ -1,12 +1,41 @@
-"use strict";
+const bcrypt = require('bcrypt');
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
+
+        static async createUser(username, email, password) {
+            const salt = await bcrypt.genSalt(10);
+            console.log(salt);
+
+            const hashedPassword = await bcrypt.hash(password, salt)
+            console.log(hashedPassword)
+
+            const userRow = await User.create({
+                username, email, password: hashedPassword
+            });
+
+            return userRow;
+        }
+
+        static async getUserByEmail(email) {
+            const user = await User.findOne({ where: { email }})
+            if (!user) { throw new Error(`User: ${email} not found!`); }
+            
+            return user;
+        }
+
+        static async login(email, password) {
+            const user = await this.getuserByEmail(email);
+            const isValidPassword = await bcrypt.compare(password, user.password)
+            
+            if (!isValidPassword) {
+                throw new Error(`Invalid password for: ${email}`);
+            }
+
+            return user;
+        }
+
         static associate(models) {
             // define association here
         }
