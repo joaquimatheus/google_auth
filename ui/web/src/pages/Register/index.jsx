@@ -5,9 +5,10 @@ import { FormInput, StyledRegister, LogoContainer } from './styles'
 import { GoogleLogin } from '@react-oauth/google'
 
 import { useForm } from 'react-hook-form'
+import { ErrorMessage } from '@hookform/error-message'
 
 const Register = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm({ criteriaMode: "all" })
     const loggedIn = getFromLocalStorage("login-state") 
     const Navigate = useNavigate()
 
@@ -23,7 +24,9 @@ const Register = () => {
 
         const jsonResponse = await response.json();
 
-        console.log(data);
+        if (jsonResponse.error) {
+            console.log(response)
+        }
 
         console.log(jsonResponse)
     }
@@ -49,12 +52,31 @@ const Register = () => {
 
                 <h1>register new user_</h1>
 
-                {errors.username?.type === 'required' && <p role="alert">Username is required</p>}
+                <ErrorMessage 
+                    errors={errors}
+                    name="username"
+                    render={({ messages }) => 
+                        messages &&
+                        Object.entries(messages).map( ([type, message]) => (
+                            <p key={type}>{message}</p>
+                        ))
+                    }
+                />
+
                 <FormInput 
                     type="text" 
                     placeholder="username"
-                    {...register('username', { required: true })}
-                    aria-invalid={errors.username ? "true" : "false"}
+                    {...register('username', { 
+                        required: "Username is required",
+                        maxLength: {
+                            value: 20,
+                            message: 'the username exceed the max length (20 characters)'
+                        },
+                        pattern: {
+                            value: /^(?=.{6,}$)(?:[a-zA-Z\d]+(?:(?:\.|-|_)[a-zA-Z\d])*)+$/,
+                            message: ['- minimum of characters is 4', ['- characters']],
+                        }
+                    })}
                 />
 
                 {errors.email?.type === 'required' && <p role="alert">Email is required</p>}
