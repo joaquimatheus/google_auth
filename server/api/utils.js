@@ -126,7 +126,7 @@ function buildHandler(handler) {
                 console.error(ex);
             }
 
-            const uiMessager = getUiMessageFromException(ex);
+            const uiMessage = getUiMessageFromException(ex);
             const statusCode = ex.statusCode || 500;
 
             res.status(statusCode).json({
