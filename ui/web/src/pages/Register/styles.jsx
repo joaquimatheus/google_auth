@@ -78,3 +78,27 @@ export const FormInput = styled.input`
         transition: color 0.4s ease;
     }
 `
+
+export const ErrorList = styled.ul`
+    font-weight: bold;
+    color: hsla(355.5, 78%, 56%, 70%);
+    list-style-type: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 1em;
+    background-color: var(--secondary);
+    border: solid hsla(355.5, 78%, 56%, 70%);
+    border-radius:  6px;
+
+    figcaption {
+        --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+        color: hsla(0, 0%, var(--switch), 70%);
+        text-align: left;
+        margin-bottom: 0.3em;
+    }
+`
+
+export const ErrorItem = styled.li`
+    list-style: none;
+    position: relative;
+    padding: 3px 0 2px 25px;
+`

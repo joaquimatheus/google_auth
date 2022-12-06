@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react';
 import { getFromLocalStorage, setToLocalStorage } from '../../helpers/storage'
 import { Navigate, useNavigate } from 'react-router-dom';
-import { FormInput, StyledRegister, LogoContainer } from './styles'
+import { FormInput, StyledRegister, LogoContainer, ErrorList, ErrorItem } from './styles'
 import { GoogleLogin } from '@react-oauth/google'
 
 import { useForm } from 'react-hook-form'
@@ -10,7 +10,7 @@ import { ErrorMessage } from '@hookform/error-message'
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({ criteriaMode: "all" })
     const loggedIn = getFromLocalStorage("login-state") 
-    const Navigate = useNavigate()
+    const navigate = useNavigate()
 
     const onSubmit = async data => {
         const response = await fetch(`http://localhost:4000/api/v1/users`, {
@@ -28,22 +28,12 @@ const Register = () => {
             console.log(response)
         }
 
-        console.log(jsonResponse)
+        navigate("/signin", { replace: true }) 
     }
-
-    /*
-    const registerHandler = (ev) => {
-        ev.preventDefault()
-
-        const FormData = new FormData(ev.target)
-
-        navigate('/', { replace: true })
-    }
-    */
 
     return (
         <StyledRegister>
-            { loggedIn && <Navigate to="/wellcome" replace /> }
+            { loggedIn && <Navigate to="/welcome" replace /> }
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <LogoContainer>
@@ -58,7 +48,15 @@ const Register = () => {
                     render={({ messages }) => 
                         messages &&
                         Object.entries(messages).map( ([type, message]) => (
-                            <p key={type}>{message}</p>
+                            type == 'required' ? 
+                                <p key={type}>{message}</p>  :
+                                <ErrorList>
+                                    <figcaption>Please complete all details</figcaption>
+                                    <ErrorItem key={type}>{message[0]}</ErrorItem>
+                                    <ErrorItem key={type}>{message[1]}</ErrorItem>
+                                    <ErrorItem key={type}>{message[2]}</ErrorItem>
+                                    <ErrorItem key={type}>{message[3]}</ErrorItem>
+                                </ErrorList>
                         ))
                     }
                 />
@@ -73,8 +71,14 @@ const Register = () => {
                             message: 'the username exceed the max length (20 characters)'
                         },
                         pattern: {
-                            value: /^(?=.{6,}$)(?:[a-zA-Z\d]+(?:(?:\.|-|_)[a-zA-Z\d])*)+$/,
-                            message: ['- minimum of characters is 4', ['- characters']],
+                            value: /^(?=.{4,}$)(?:[a-zA-Z\d]+(?:(?:\.|-|_)[a-zA-Z\d])*)+$/,
+                            message: 
+                                [
+                                    ' - Minimum of characters is 4', 
+                                    ` - Isn't allow _ or . in the beginning`,
+                                    ` - Ins't allow __ or ._ or .. inside`,
+                                    ` - Ins't allow _ or . at the end`,
+                                ],
                         }
                     })}
                 />
