@@ -11,7 +11,7 @@ module.exports = function (app) {
             const email = req.string('email');
             const password = req.string('email');
 
-            const userRow = db.users.create({
+            const userRow = await db.users.create({
                 username,
                 email,
                 password
@@ -21,7 +21,7 @@ module.exports = function (app) {
 
             res.status(200).json({
                 type: 'users',
-                data: { username, email, password }
+                data: userRow
             })
         })
     )
