@@ -1,7 +1,9 @@
+require('../../dotenv.js');
 const express = require('express');
-
 const { buildHandler } = require('../utils');
 const db = require('../../core/models')
+
+const { HTTP_SECRET } = process.env;
 
 module.exports = function (app) {
     app.post("/api/v1/users", 
@@ -11,7 +13,12 @@ module.exports = function (app) {
             const email = req.string('email');
             const password = req.string('password');
 
-            const userRow = await db.users.createUser(username, email, password)
+            const userRow = await db.users
+                .createUser(
+                    username, 
+                    email, 
+                    password
+                );
 
             res.status(200).json({
                 type: 'users',
@@ -27,9 +34,11 @@ module.exports = function (app) {
             const password = req.string('password');
 
             const userRow = await db.users.login(email, password);
+            const token = jwt.sign(user, HTTP_SECRET);
 
             res.status(200).json({
-                user: userRow
+                ok: true,
+                token
             })
         })
     )
