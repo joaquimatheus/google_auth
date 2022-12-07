@@ -1,6 +1,7 @@
 const path = require('path'); require('../dotenv.js');
-const express = require('express')
+const express = require('express');
 const app = express();
+const logger = require('../helpers/logger');
 
 process.env.TZ = 'UTC';
 
@@ -8,7 +9,7 @@ let hasInitializedServer = false;
 let httpServer;
 
 function fatalHandler(err) {
-    console.error(err, { FATAL: true })
+    logger.error(err, { FATAL: true })
     process.exit(1);
 }
 
@@ -21,11 +22,11 @@ app.use((req, res, next) => {
     const prevStart = new Date().getTime();
     const msg = `[${ip} ${method} ${prevStart} - receiving {${url}}]`
 
-    console.log(msg);
+    logger.info(msg);
 
     res.on('close', () => {
         const start = new Date() - prevStart;
-        console.log(`[${ip}{${method} ${prevStart} - }]` + 
+        logger.info(`[${ip}{${method} ${prevStart} - }]` + 
             `closed: ${url} ${statusCode} ${start}ms`)
     })
 
@@ -37,9 +38,9 @@ function listen() {
         if (hasInitializedServer) { return }
 
         hasInitializedServer = true;
-        console.log(`it's alive http://localhost:${process.env.HTTP_PORT}`)
+        logger.info(`it's alive http://localhost:${process.env.HTTP_PORT}`)
     }).on('error', (err) => {
-        console.error(err);
+        logger.error(err);
         process.exit(1);
     })
 }

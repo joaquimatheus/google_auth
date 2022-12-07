@@ -1,3 +1,5 @@
+const logger = require('../helpers/logger');
+
 function allowCrossDomain(req, res, next) {
 
     res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -20,22 +22,22 @@ module.exports = (app) => {
     const _delete = app.delete;
 
     app.post = function(route) {
-        console.log(`Binding route: {POST} ${route}`)
+        logger.info(`Binding route: {POST} ${route}`)
         return _post.apply(this, arguments);
     };
 
     app.get = function(route) {
-        console.log(`Binding route: {GET} ${route}`);
+        logger.info(`Binding route: {GET} ${route}`);
         return _get.apply(this, arguments);
     };
 
     app.put = function(route) {
-        console.log(`Binding route: {PUT} ${route}`);
+        logger.info(`Binding route: {PUT} ${route}`);
         return _put.apply(this, arguments);
     };
 
     app.delete = function(route) {
-        console.olog(`Binding route: {DELETE} ${route}`);
+        logger.info(`Binding route: {DELETE} ${route}`);
         return _delete.apply(this, arguments);
     }
 
@@ -56,7 +58,7 @@ module.exports = (app) => {
     });
 
     app.use((err, req, res, next) => {
-        console.error(err);
+        logger.error(err);
         const statusCode = err.statusCode || 500;
 
         res.status(statusCode).json({
