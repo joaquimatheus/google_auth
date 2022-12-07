@@ -5,11 +5,11 @@ import { LogoutStyled } from './styles';
 import { getFromLocalStorage, setToLocalStorage } from '../../helpers/storage';
 
 function Logout() {
-    const loggedIn = getFromLocalStorage("login-state")
+    const loggedIn = getFromLocalStorage("jwtToken")
     const navigate = useNavigate();
 
     const logoutHandler = (ev) => {
-        setToLocalStorage("login-state", false)
+        setToLocalStorage("jwtToken", null)
         navigate('/signin', { replace: true })
     }
 
