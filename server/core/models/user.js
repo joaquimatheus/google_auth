@@ -6,10 +6,8 @@ module.exports = (sequelize, DataTypes) => {
 
         static async createUser(username, email, password) {
             const salt = await bcrypt.genSalt(10);
-            console.log(salt);
 
             const hashedPassword = await bcrypt.hash(password, salt)
-            console.log(hashedPassword)
 
             const userRow = await User.create({
                 username, email, password: hashedPassword
@@ -26,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         }
 
         static async login(email, password) {
-            const user = await this.getuserByEmail(email);
+            const user = await this.getUserByEmail(email);
             const isValidPassword = await bcrypt.compare(password, user.password)
             
             if (!isValidPassword) {
