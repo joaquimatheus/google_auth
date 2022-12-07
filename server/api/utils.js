@@ -1,4 +1,6 @@
+require('../dotenv.js');
 const V = require('argument-validator');
+const jwt = require('jsonwebtoken');
 
 function throwValidationError(msg) {
     const error = new Error(msg);
@@ -22,6 +24,20 @@ function getUiMessageFromException(ex) {
     }
 
     return message;
+}
+
+function validateJwtToken(req, res, next) {
+    if (!req.headers.authorization) {
+        throw new Error('Invalid token')
+    }
+
+    const token = req.headers.authorization.replace('/^Bearer /', '')
+    jwt.verify(token, process.env.HTTP_SECRET);
+
+    const parsed = jwt.decode(token);
+    req.userId = parsed.id;
+
+    next();
 }
 
 const requestExtensions = {
@@ -147,4 +163,4 @@ function isEmpty(obj) {
     return true;
 }
 
-module.exports = { buildHandler, isEmpty };
+module.exports = { buildHandler, isEmpty, validateJwtToken };
