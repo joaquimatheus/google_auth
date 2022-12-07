@@ -1,51 +1,68 @@
-import React, { FormEvent } from 'react';
-import { getFromLocalStorage, setToLocalStorage } from '../../helpers/storage'
-import { Navigate, useNavigate } from 'react-router-dom';
-import { FormInput, LogoContainer, StyledLogin } from './styles'
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
+import React, { FormEvent } from "react";
+
+import { getFromLocalStorage, setToLocalStorage } from "../../helpers/storage";
+import ajaxAdapter from "../../helpers/ajaxAdapter";
+
+import { Navigate, useNavigate } from "react-router-dom";
+import { FormInput, LogoContainer, StyledLogin } from "./styles";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+
+import { useForm } from "react-hook-form";
 
 const Login = () => {
-    const loggedIn = getFromLocalStorage("login-state")
-    const navigate = useNavigate()
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({ criteriaMode: "all" });
 
-    const loginHandler = (ev) => {
-        ev.preventDefault()
+    const loggedIn = getFromLocalStorage("jwtToken");
+    const navigate = useNavigate();
 
-        const formData = new FormData(ev.target)
+    const onLogin = async (data) => {
+        console.log(data)
 
-        setToLocalStorage('login-state', true)
-        navigate("/welcome", { replace: true })
-    }
+        const { json } = ajaxAdapter.request("/users/login", "post", data);
+
+        console.log(json);
+    };
 
     return (
         <StyledLogin>
             {loggedIn && <Navigate to="/welcome" replace />}
             <LogoContainer>
-                <img src="logo.png" alt="Wysa Logo"/>
+                <img src="logo.png" alt="Wysa Logo" />
             </LogoContainer>
 
             <div className="seperator" />
 
-            <form action="/" onSubmit={loginHandler}>
-                <FormInput type="email" name="email" placeholder="Email" required/>
-                <FormInput 
+            <form action="/" onSubmit={handleSubmit(onLogin)}>
+                <FormInput
+                    type="email"
+                    placeholder="Email"
+                    { ...register('email', {
+                        required: 'Email is required'
+                    })}
+                />
+                <FormInput
                     type="password"
-                    name="password"
-                    placeholder="Password"
-                    required
+                    placeholder="password"
+                    { ...register('password', {
+                        required: 'Passowrd is required'
+                    })}
                 />
                 <GoogleLogin
-                    onSuccess={credentialResponse => {
-                        console.log(credentialResponse)
+                    onSuccess={(credentialResponse) => {
+                        console.log(credentialResponse);
                     }}
                     onError={() => {
-                        console.log("login failed")
+                        console.log("login failed");
                     }}
                 />
                 <button type="submit">Login</button>
             </form>
         </StyledLogin>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;
