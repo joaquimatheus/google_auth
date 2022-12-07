@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom'
 import Logout from '../../components/Logout'
 
 const Welcome = () => {
-    const loggedIn = getFromLocalStorage('login-state');
+    const loggedIn = getFromLocalStorage('jwtToken');
     
     return (
         <StyledWelcome>

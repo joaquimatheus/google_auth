@@ -2,14 +2,13 @@ import React, { FormEvent } from 'react';
 import { getFromLocalStorage, setToLocalStorage } from '../../helpers/storage'
 import { Navigate, useNavigate } from 'react-router-dom';
 import { FormInput, StyledRegister, LogoContainer, ErrorList, ErrorItem } from './styles'
-import { GoogleLogin } from '@react-oauth/google'
 
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({ criteriaMode: "all" })
-    const loggedIn = getFromLocalStorage("login-state") 
+    const loggedIn = getFromLocalStorage("jwtToken") 
     const navigate = useNavigate()
 
     const onSubmit = async data => {
