@@ -3,16 +3,18 @@ import React, { FormEvent } from "react";
 import { getFromLocalStorage, setToLocalStorage } from "../../helpers/storage";
 import ajaxAdapter from "../../helpers/ajaxAdapter";
 
-import { Navigate, useNavigate } from "react-router-dom";
-import { FormInput, LogoContainer, StyledLogin } from "./styles";
+import { Navigate, useNavigate, Link } from "react-router-dom";
+import { FormInput, LogoContainer, StyledLogin, StyledLink } from "./styles";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 import { useForm } from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
 
 const Login = () => {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors },
     } = useForm({ criteriaMode: "all" });
 
@@ -22,9 +24,14 @@ const Login = () => {
     const onLogin = async (data) => {
         console.log(data)
 
-        const { json } = ajaxAdapter.request("/users/login", "post", data);
-
-        console.log(json);
+        const response = await ajaxAdapter.request("/users/login", "post", data);
+        
+        if (response == false) {
+            setError('serverSide', {
+                type: 'server side',
+                message: 'The email or password is wrong'
+            })
+        }
     };
 
     return (
@@ -36,7 +43,12 @@ const Login = () => {
 
             <div className="seperator" />
 
+
+
             <form action="/" onSubmit={handleSubmit(onLogin)}>
+
+                <p>{errors.serverSide && errors.serverSide.message}</p>
+
                 <FormInput
                     type="email"
                     placeholder="Email"
@@ -59,8 +71,12 @@ const Login = () => {
                         console.log("login failed");
                     }}
                 />
-                <button type="submit">Login</button>
+                <StyledLink to="/signup">
+                    Dont't have an account?
+                </StyledLink>
+                <button name="submitField" type="submit">Login</button>
             </form>
+
         </StyledLogin>
     );
 };

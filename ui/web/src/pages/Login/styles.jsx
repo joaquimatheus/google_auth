@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom';
 
 export const StyledLogin = styled.div`
     display: flex;
@@ -35,6 +36,25 @@ export const StyledLogin = styled.div`
         --switch: calc((var(--bg-first-val) - var(--threshold)) * -100%);
         background-color: hsla(0, 0%, var(--switch), 10%);
         height: 230px;
+    }
+
+    p {
+        font-weight: bold;
+        color: hsla(355.5, 78%, 56%, 70%);
+    }
+`
+
+export const StyledLink = styled(Link)`
+    --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+    text-decoration-color: hsla(0,0%, var(--switch), 70%);
+    text-align: center;
+    color: hsla(0,0%, var(--switch), 70%);
+
+    font-weight: 500;
+
+    &&:hover {
+        cursor:pointer;
+        opacity: 50%;
     }
 `
 
