@@ -1,5 +1,16 @@
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const { Model } = require("sequelize");
+
+function getGenerateAuthToken() {
+    return new Promise((resolve, reject) => {
+        crypto.randomBytes(32, function(err, buf) {
+            if (err) { return reject(err); }
+
+            resolve(buf.toString('hex'))
+        })
+    })
+}
 
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
@@ -10,9 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             const hashedPassword = await bcrypt.hash(password, salt)
 
             const userRow = await User.create({
-                username, email, password: hashedPassword
-            });
-
+                username, email, password: hashedPassword });
             return userRow;
         }
 
@@ -34,15 +43,26 @@ module.exports = (sequelize, DataTypes) => {
             return user;
         }
 
+        static async generateAuthToken(email) {
+            const user = await this.getUserByEmail(email);
+            const token = await getGenerateAuthToken();
+
+            console.log(user);
+
+            await User.update({ login_token: token }, { where: user.id })
+        }
+
         static associate(models) {
             // define association here
         }
+
     }
     User.init(
         {
             username: DataTypes.STRING,
             email: DataTypes.STRING,
             password: DataTypes.TEXT,
+            login_token: DataTypes.TEXT
         },
         {
             sequelize,
