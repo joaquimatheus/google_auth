@@ -21,6 +21,10 @@ module.exports = {
                 type: Sequelize.TEXT,
                 allowNull: false,
             },
+            login_token: {
+                type: Sequelize.TEXT,
+                unique: true,
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -30,8 +34,9 @@ module.exports = {
                 type: Sequelize.DATE,
             },
         });
+
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("Users");
+        await queryInterface.dropTable("users");
     },
 };
