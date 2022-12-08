@@ -56,4 +56,21 @@ module.exports = function (app) {
             });
         })
     );
+
+    app.post(
+        "/api/v1/recover/forget-password",
+        express.json(),
+        buildHandler(async function (req, res) {
+            const email = req.string('email');
+            
+            const user = await db.users.generateAuthToken(email);
+
+            // TODO
+            // -> Send an email to user
+            // /recover-password?token=${user.login_token};
+            logger.info(user);
+
+            res.end(JSON.stringify({ ok: true, user }))
+        })
+    )
 };
