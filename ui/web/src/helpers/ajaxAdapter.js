@@ -50,7 +50,8 @@ async function doRequest(url, method, body, headers) {
         }
 
         errorStack.message = ex.message || ex.statusText;
-        throw errorStack;
+
+        return ex.ok;
     }
 }
 
