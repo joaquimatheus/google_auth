@@ -47,9 +47,9 @@ module.exports = (sequelize, DataTypes) => {
             const user = await this.getUserByEmail(email);
             const token = await getGenerateAuthToken();
 
-            console.log(user);
+            const { id } = user;
 
-            await User.update({ login_token: token }, { where: user.id })
+            await User.update({ login_token: token }, { where: {id} })
         }
 
         static associate(models) {

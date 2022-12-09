@@ -72,5 +72,5 @@ module.exports = function (app) {
 
             res.end(JSON.stringify({ ok: true, user }))
         })
-    )
+    );
 };
