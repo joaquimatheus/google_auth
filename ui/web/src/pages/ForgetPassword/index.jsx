@@ -30,7 +30,7 @@ const ForgetPassword = () => {
         console.log(response);
 
         // only in dev env this behavior
-        navigate(`/recover-password?token=${response.token}`)
+        navigate(`/recover-password?recovery=${response.login_token}`)
     };
 
     return (

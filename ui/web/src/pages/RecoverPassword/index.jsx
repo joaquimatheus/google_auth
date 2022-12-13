@@ -13,7 +13,6 @@ import { ErrorMessage } from "@hookform/error-message";
 import { getFromLocalStorage } from "../../helpers/storage";
 
 const RecoverPassword = () => {
-    const loggedIn = getFromLocalStorage('jwtToken');
     const [ isValid, setIsValid ] = useState(null);
     const query = useQuery();
     const navigate = useNavigate();
@@ -27,7 +26,7 @@ const RecoverPassword = () => {
     useEffect(() => {
         const validateToken = async () => {
             const response = await ajaxAdapter.request(
-                `/recover/validate?token=${query.get('token')}`,
+                `/recover/validate?token=${query.get('recovery')}`,
                 "get",
             );
 
@@ -42,21 +41,27 @@ const RecoverPassword = () => {
     }, []);
 
     const onNewPassword = async (data) => {
-        const token = query.get('token');
+        const token = query.get('recovery');
         data['token'] = token;
 
         delete token.confirm_password;
 
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms))
+        }
+
         const response = await ajaxAdapter.request("/recover/set-new-password", "post", data);
 
         if (response.ok) {
-            alert('Your password is restored');
+            alert('Your password is restored, is redirect to login page');
+
+            await sleep(5000);
+            navigate('/signin')
         }
     }
 
     return (
         <StyledRecover>
-            { loggedIn && <Navigate to="/signin"/> }
             { isValid == false && <Navigate to="/forget-password" replace /> }
             <form onSubmit={handleSubmit(onNewPassword)}>
                 <h2>Set your new password</h2>
