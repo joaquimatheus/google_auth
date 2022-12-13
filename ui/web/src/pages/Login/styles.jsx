@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const StyledLogin = styled.div`
     display: flex;
@@ -15,6 +15,10 @@ export const StyledLogin = styled.div`
         display: flex;
         flex-direction: column;
         gap: 20px;
+        --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+        box-shadow: 0 0 0 2px hsla(0, 0%, var(--switch), 70%),
+            15px 15px 0 0 hsla(0, 0%, var(--switch), 70%);
+        padding: 25px;
     }
 
     button {
@@ -42,21 +46,21 @@ export const StyledLogin = styled.div`
         font-weight: bold;
         color: hsla(355.5, 78%, 56%, 70%);
     }
-`
+`;
 
 export const StyledLink = styled(Link)`
     --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
-    text-decoration-color: hsla(0,0%, var(--switch), 70%);
+    text-decoration-color: hsla(0, 0%, var(--switch), 70%);
     text-align: center;
-    color: hsla(0,0%, var(--switch), 70%);
+    color: hsla(0, 0%, var(--switch), 70%);
 
     font-weight: 500;
 
     &&:hover {
-        cursor:pointer;
+        cursor: pointer;
         opacity: 50%;
     }
-`
+`;
 
 export const LogoContainer = styled.div`
     height: 100%;
@@ -66,12 +70,12 @@ export const LogoContainer = styled.div`
     img {
         width: 150px;
     }
-`
+`;
 
 export const FormInput = styled.input`
     padding: 15px 20px;
     border: solid 2px transparent;
-    box-shadow: 0 3px 5px rgba(0,0,0, 0.08);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08);
     background-color: var(--secondary);
     border-radius: 6px;
     outline: none;
@@ -91,4 +95,4 @@ export const FormInput = styled.input`
         color: inherit;
         transition: color 0.4s ease;
     }
-`
+`;

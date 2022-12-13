@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const StyledRegister = styled.div`
     display: flex;
@@ -15,12 +15,16 @@ export const StyledRegister = styled.div`
         display: flex;
         flex-direction: column;
         gap: 20px;
+        text-align: center;
+        --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+        box-shadow: 0 0 0 2px hsla(0, 0%, var(--switch), 70%),
+            15px 15px 0 0 hsla(0, 0%, var(--switch), 70%);
+        padding: 25px;
     }
 
     form h1 {
         --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
         color: hsla(0, 0%, var(--switch), 70%);
-        text-align: center
     }
 
     form p {
@@ -41,8 +45,7 @@ export const StyledRegister = styled.div`
         cursor: pointer;
         transition: all 0.4s ease;
     }
-    
-`
+`;
 
 export const LogoContainer = styled.div`
     height: 100%;
@@ -52,12 +55,12 @@ export const LogoContainer = styled.div`
     img {
         width: 150px;
     }
-`
+`;
 
 export const FormInput = styled.input`
     padding: 15px 20px;
     border: solid 2px transparent;
-    box-shadow: 0 3px 5px rgba(0,0,0, 0.08);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08);
     background-color: var(--secondary);
     border-radius: 6px;
     outline: none;
@@ -77,7 +80,7 @@ export const FormInput = styled.input`
         color: inherit;
         transition: color 0.4s ease;
     }
-`
+`;
 
 export const ErrorList = styled.ul`
     font-weight: bold;
@@ -87,7 +90,7 @@ export const ErrorList = styled.ul`
     padding: 1em;
     background-color: var(--secondary);
     border: solid hsla(355.5, 78%, 56%, 70%);
-    border-radius:  6px;
+    border-radius: 6px;
 
     figcaption {
         --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
@@ -95,10 +98,10 @@ export const ErrorList = styled.ul`
         text-align: left;
         margin-bottom: 0.3em;
     }
-`
+`;
 
 export const ErrorItem = styled.li`
     list-style: none;
     position: relative;
     padding: 3px 0 2px 25px;
-`
+`;

@@ -16,7 +16,8 @@ export const StyledForget = styled.div`
         flex-direction: column;
         gap: 20px;
         --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
-        box-shadow: hsla(0, 0%, var(--switch), 0.4) 5px 5px, hsla(0, 0%, var(--switch), 0.3) 10px 10px, hsla(0, 0%, var(--switch), 0.2) 15px 15px, hsla(0, 0%, var(--switch), 0.1) 20px 20px, hsla(0, 0%, var(--switch), 0.05) 25px 25px;
+        box-shadow: 0 0 0 2px hsla(0, 0%, var(--switch), 70%),
+            15px 15px 0 0 hsla(0, 0%, var(--switch), 70%);
         padding: 25px;
     }
 

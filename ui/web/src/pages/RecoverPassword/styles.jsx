@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const StyledRecover = styled.div`
     display: flex;
@@ -16,14 +16,15 @@ export const StyledRecover = styled.div`
         flex-direction: column;
         gap: 20px;
         --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
-        box-shadow: hsla(0, 0%, var(--switch), 0.4) 5px 5px, hsla(0, 0%, var(--switch), 0.3) 10px 10px, hsla(0, 0%, var(--switch), 0.2) 15px 15px, hsla(0, 0%, var(--switch), 0.1) 20px 20px, hsla(0, 0%, var(--switch), 0.05) 25px 25px;
+        box-shadow: 0 0 0 2px hsla(0, 0%, var(--switch), 70%),
+            15px 15px 0 0 hsla(0, 0%, var(--switch), 70%);
         padding: 25px;
     }
 
     form h2 {
         --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
         color: hsla(0, 0%, var(--switch), 70%);
-        text-align: center
+        text-align: center;
     }
 
     form p {
@@ -43,7 +44,7 @@ export const StyledRecover = styled.div`
         cursor: pointer;
         transition: all 0.4s ease;
     }
-`
+`;
 
 export const LogoContainer = styled.div`
     height: 100%;
@@ -53,12 +54,12 @@ export const LogoContainer = styled.div`
     img {
         width: 150px;
     }
-`
+`;
 
 export const FormInput = styled.input`
     padding: 15px 20px;
     border: solid 2px transparent;
-    box-shadow: 0 3px 5px rgba(0,0,0, 0.08);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08);
     background-color: var(--secondary);
     border-radius: 6px;
     outline: none;
@@ -78,4 +79,4 @@ export const FormInput = styled.input`
         color: inherit;
         transition: color 0.4s ease;
     }
-`
+`;
