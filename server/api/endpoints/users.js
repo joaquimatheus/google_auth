@@ -77,8 +77,8 @@ module.exports = function (app) {
         "/api/v1/recover/validate",
         buildHandler(async function(req, res) {
             const token = req.query.token;
-
-            db.users.validateLoginToken(token);
+1
+            const isValid = await db.users.validateLoginToken(token);
 
             res.end(JSON.stringify({ ok: true }))
         })

@@ -68,21 +68,27 @@ module.exports = (sequelize, DataTypes) => {
         }
 
         static async validateLoginToken(token) {
-            const user = User.findOne({ where: { login_token: token } });
+            const user = await User.findOne({ where: { login_token: token } });
 
-            if (!user) {
+            if (user == null) {
                 throw new Error("Invalid token");
             }
+
+            return user;
         }
 
         static async setNewPassword(loginToken, password) {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
-            return User.update(
+            const user = User.update(
                 { password: hashedPassword, login_token: null },
-                { where: { login_token: loginT22oken } }
+                { where: { login_token: loginToken } }
             );
+
+            if (!user) { throw new Error('Token is null') }
+
+            return user;
         }
 
         static associate(models) {
