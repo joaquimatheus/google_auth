@@ -12,6 +12,8 @@ import { useTheme } from "../../themes/useTheme";
 import Login from "../../pages/Login";
 import Register from '../../pages/Register';
 import Welcome from '../../pages/Welcome';
+import ForgetPassword from '../../pages/ForgetPassword';
+import RecoverPassword from '../../pages/RecoverPassword';
 
 import ThemePicker from "../ThemePicker";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -49,6 +51,8 @@ function App() {
                                 </Nav>
                             </header>
                             <Routes>
+                                <Route path="/forget-password" element={ <ForgetPassword />} />
+                                <Route path="/recover-password" element={ <RecoverPassword /> }/>
                                 <Route path="/signin" element={<Login />} />
                                 <Route path="/signup" element={ <Register /> }/>
                                 <Route path="/welcome" element={ <Welcome /> }/>
