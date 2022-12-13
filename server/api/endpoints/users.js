@@ -68,9 +68,31 @@ module.exports = function (app) {
             // TODO
             // -> Send an email to user
             // /recover-password?token=${user.login_token};
-            logger.info(user);
 
-            res.end(JSON.stringify({ ok: true, user }))
+            res.end(JSON.stringify({ ok: true, token: user }))
         })
     );
+
+    app.get(
+        "/api/v1/recover/validate",
+        buildHandler(async function(req, res) {
+            const token = req.query.token;
+
+            db.users.validateLoginToken(token);
+
+            res.end(JSON.stringify({ ok: true }))
+        })
+    )
+
+    app.post('/api/v1/recover/set-new-password',
+        express.json(),
+        buildHandler(async function(req, res) {
+            const token = req.string('token');
+            const password = req.string('password');
+
+            db.users.setNewPassword(token, password);
+
+            res.end(JSON.stringify({ ok: true }));
+        })
+    )
 };
