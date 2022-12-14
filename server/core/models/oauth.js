@@ -1,11 +1,28 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class OAuth extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
+
+        static async createUser(username, email, picture) {
+            let user = await this.getUserByEmail(email);
+
+            if(!user) {
+                user = await OAuth.create({
+                    username, email, picture
+                })  
+            }
+
+            return user;
+        }
+
+        static async getUserByEmail(email) {
+            const user = await OAuth.findOne({ where: { email } });
+            if (user === null) {
+                return;
+            }
+
+            return user;
+        }
+
         static associate(models) {
             // define association here
         }
