@@ -16,10 +16,25 @@ module.exports = function (app) {
         express.json(),
         buildHandler(async function (req, res) {
             const token = req.string('token');
+
+            const ticket = await googleClient.verifyIdToken({
+                idToken: token,
+                audient: `${process.env.GOOGLE_CLIENT_ID}`,
+            });
+
+            const payload = ticket.getPayload();
+            const { name, email, picture } = payload;
+
+            const user = await db.oauth.createUser(
+                name,
+                email,
+                picture
+            )
             
             res.status(200).json({
-                type: 'oauth',
-                data: token
+                ok: true,
+                user,
+                token
             });
         })
     )
