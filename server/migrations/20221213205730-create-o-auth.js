@@ -1,6 +1,6 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("OAuth", {
+        await queryInterface.createTable("oauths", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -30,6 +30,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("OAuth");
+        await queryInterface.dropTable("oauths");
     },
 };
