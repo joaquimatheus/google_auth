@@ -42,7 +42,8 @@ module.exports = (app) => {
     }
 
     // below here put the endpoints
-    require('./endpoints/users')(app)
+    require('./endpoints/users')(app);
+    require('./endpoints/oauth')(app);
 
     app.get = _get;
     app.post = _post;
