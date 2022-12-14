@@ -124,8 +124,12 @@ const Register = () => {
                     aria-invalid={errors.confirm_password ? "true" : "false"}
                 />
                 <GoogleLogin
-                    onSuccess={(credentialResponse) => {
-                        console.log(credentialResponse);
+                    onSuccess={ async (credentialResponse) => {
+                        const data = { token: credentialResponse.credential };
+                        const response = await ajaxAdapter.request("/google/auth", "post", data )
+
+                        if (response.ok) { navigate("/welcome") }
+                        
                     }}
                     onError={() => {
                         console.log("Login Failed");
