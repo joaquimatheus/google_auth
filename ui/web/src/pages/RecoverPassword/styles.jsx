@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-export const StyledLogin = styled.div`
+export const StyledRecover = styled.div`
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 50px;
     padding: 50px;
@@ -21,6 +21,17 @@ export const StyledLogin = styled.div`
         padding: 25px;
     }
 
+    form h2 {
+        --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+        color: hsla(0, 0%, var(--switch), 70%);
+        text-align: center;
+    }
+
+    form p {
+        font-weight: bold;
+        color: hsla(355.5, 78%, 56%, 70%);
+    }
+
     button {
         padding: 15px 20px;
         border-radius: 6px;
@@ -30,35 +41,8 @@ export const StyledLogin = styled.div`
         color: hsla(0, 0%, var(--switch), 70%);
         font-family: inherit;
         font-weight: bold;
-        margin-top: 30px;
         cursor: pointer;
         transition: all 0.4s ease;
-    }
-
-    .seperator {
-        width: 1px;
-        --switch: calc((var(--bg-first-val) - var(--threshold)) * -100%);
-        background-color: hsla(0, 0%, var(--switch), 10%);
-        height: 230px;
-    }
-
-    p {
-        font-weight: bold;
-        color: hsla(355.5, 78%, 56%, 70%);
-    }
-`;
-
-export const StyledLink = styled(Link)`
-    --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
-    text-decoration-color: hsla(0, 0%, var(--switch), 70%);
-    text-align: center;
-    color: hsla(0, 0%, var(--switch), 70%);
-
-    font-weight: 500;
-
-    &&:hover {
-        cursor: pointer;
-        opacity: 50%;
     }
 `;
 

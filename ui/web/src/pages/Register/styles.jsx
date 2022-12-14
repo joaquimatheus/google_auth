@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-export const StyledLogin = styled.div`
+export const StyledRegister = styled.div`
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 50px;
     padding: 50px;
@@ -15,10 +15,21 @@ export const StyledLogin = styled.div`
         display: flex;
         flex-direction: column;
         gap: 20px;
+        text-align: center;
         --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
         box-shadow: 0 0 0 2px hsla(0, 0%, var(--switch), 70%),
             15px 15px 0 0 hsla(0, 0%, var(--switch), 70%);
         padding: 25px;
+    }
+
+    form h1 {
+        --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+        color: hsla(0, 0%, var(--switch), 70%);
+    }
+
+    form p {
+        font-weight: bold;
+        color: hsla(355.5, 78%, 56%, 70%);
     }
 
     button {
@@ -33,32 +44,6 @@ export const StyledLogin = styled.div`
         margin-top: 30px;
         cursor: pointer;
         transition: all 0.4s ease;
-    }
-
-    .seperator {
-        width: 1px;
-        --switch: calc((var(--bg-first-val) - var(--threshold)) * -100%);
-        background-color: hsla(0, 0%, var(--switch), 10%);
-        height: 230px;
-    }
-
-    p {
-        font-weight: bold;
-        color: hsla(355.5, 78%, 56%, 70%);
-    }
-`;
-
-export const StyledLink = styled(Link)`
-    --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
-    text-decoration-color: hsla(0, 0%, var(--switch), 70%);
-    text-align: center;
-    color: hsla(0, 0%, var(--switch), 70%);
-
-    font-weight: 500;
-
-    &&:hover {
-        cursor: pointer;
-        opacity: 50%;
     }
 `;
 
@@ -95,4 +80,28 @@ export const FormInput = styled.input`
         color: inherit;
         transition: color 0.4s ease;
     }
+`;
+
+export const ErrorList = styled.ul`
+    font-weight: bold;
+    color: hsla(355.5, 78%, 56%, 70%);
+    list-style-type: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 1em;
+    background-color: var(--secondary);
+    border: solid hsla(355.5, 78%, 56%, 70%);
+    border-radius: 6px;
+
+    figcaption {
+        --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+        color: hsla(0, 0%, var(--switch), 70%);
+        text-align: left;
+        margin-bottom: 0.3em;
+    }
+`;
+
+export const ErrorItem = styled.li`
+    list-style: none;
+    position: relative;
+    padding: 3px 0 2px 25px;
 `;

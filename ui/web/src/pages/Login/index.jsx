@@ -1,51 +1,88 @@
-import React, { FormEvent } from 'react';
-import { getFromLocalStorage, setToLocalStorage } from '../../helpers/storage'
-import { Navigate, useNavigate } from 'react-router-dom';
-import { FormInput, LogoContainer, StyledLogin } from './styles'
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
+import React, { FormEvent } from "react";
+
+import { getFromLocalStorage, setToLocalStorage } from "../../helpers/storage";
+import ajaxAdapter from "../../helpers/ajaxAdapter";
+
+import { Navigate, useNavigate, Link } from "react-router-dom";
+import { FormInput, LogoContainer, StyledLogin, StyledLink } from "./styles";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
 
 const Login = () => {
-    const loggedIn = getFromLocalStorage("login-state")
-    const Navigate = useNavigate()
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors },
+    } = useForm({ criteriaMode: "all" });
 
-    const loginHandler = (ev) => {
-        ev.preventDefault()
+    const loggedIn = getFromLocalStorage("jwtToken");
+    const navigate = useNavigate();
 
-        const formData = new FormData(ev.target)
+    const onLogin = async (data) => {
+        console.log(data)
 
-        setToLocalStorage('login-state', true)
-        navigate("/", { replace: true })
-    }
+        const response = await ajaxAdapter.request("/users/login", "post", data);
+        
+        if (response == false) {
+            setError('serverSide', {
+                type: 'server side',
+                message: 'The email or password is wrong'
+            })
+        }
+    };
 
     return (
         <StyledLogin>
-            {loggedIn && <Navigate to="/" replace />}
+            {loggedIn && <Navigate to="/welcome" replace />}
             <LogoContainer>
-                <img src="logo.png" alt="Wysa Logo"/>
+                <img src="logo.png" alt="Wysa Logo" />
             </LogoContainer>
 
             <div className="seperator" />
 
-            <form action="/" onSubmit={loginHandler}>
-                <FormInput type="email" name="email" placeholder="Email" required/>
-                <FormInput 
+
+
+            <form action="/" onSubmit={handleSubmit(onLogin)}>
+
+                <p>{errors.serverSide && errors.serverSide.message}</p>
+
+                <FormInput
+                    type="email"
+                    placeholder="Email"
+                    { ...register('email', {
+                        required: 'Email is required'
+                    })}
+                />
+                <FormInput
                     type="password"
-                    name="password"
-                    placeholder="Password"
-                    required
+                    placeholder="password"
+                    { ...register('password', {
+                        required: 'Passowrd is required'
+                    })}
                 />
                 <GoogleLogin
-                    onSuccess={credentialResponse => {
-                        console.log(credentialResponse)
+                    onSuccess={ async (credentialResponse) => {
+                        const data = { token: credentialResponse.credential };
+                        const response = await ajaxAdapter.request("/google/auth", "post", data )
+
+                        if (response.ok) { navigate("/welcome") }
+                    }}
                     }}
                     onError={() => {
-                        console.log("login failed")
+                        console.log("login failed");
                     }}
                 />
-                <button type="submit">Login</button>
+                <StyledLink to="/signup">
+                    Dont't have an account?
+                </StyledLink>
+                <button name="submitField" type="submit">Login</button>
             </form>
-        </StyledLogin>
-    )
-}
 
-export default Login
+        </StyledLogin>
+    );
+};
+
+export default Login;
