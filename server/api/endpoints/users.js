@@ -30,6 +30,7 @@ module.exports = function (app) {
             res.status(200).json({
                 type: "users",
                 data: userRow,
+                ok: true,
             });
         })
     );
