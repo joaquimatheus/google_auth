@@ -3,8 +3,13 @@ import { getFromLocalStorage, setToLocalStorage } from '../../helpers/storage'
 import { Navigate, useNavigate } from 'react-router-dom';
 import { FormInput, StyledRegister, LogoContainer, ErrorList, ErrorItem } from './styles'
 
-import { useForm } from 'react-hook-form'
-import { ErrorMessage } from '@hookform/error-message'
+import ajaxAdapter from '../../helpers/ajaxAdapter';
+
+import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
+
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({ criteriaMode: "all" })
@@ -12,22 +17,12 @@ const Register = () => {
     const navigate = useNavigate()
 
     const onSubmit = async data => {
-        const response = await fetch(`http://localhost:4000/api/v1/users`, {
-            mode: 'cors',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
+        delete data.confirm_password;
+        const response = await ajaxAdapter.request("/users", "post", data);
 
-        const jsonResponse = await response.json();
-
-        if (jsonResponse.error) {
-            console.log(response)
+        if (response.ok == true) {
+            navigate("/signin", { replace: true }) 
         }
-
-        navigate("/signin", { replace: true }) 
     }
 
     return (
@@ -106,6 +101,17 @@ const Register = () => {
                     placeholder="Confirm Password"
                     aria-invalid={errors.confirm_password ? "true" : "false"}
                 />
+
+                <GoogleLogin 
+                    onSuccess={credentialResponse => {
+                        console.log(credentialResponse);
+
+                        const response = ajax
+                    }}
+                    onError={() => {
+                        console.log('Login Failed')
+                    }}
+                />;
 
                 <button type="submit">Register</button>
             </form>

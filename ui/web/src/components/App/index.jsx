@@ -25,8 +25,6 @@ function App() {
         setToLocalStorage("all-themes", defaultThemes);
     }
 
-    console.log(defaultThemes);
-
     const { theme, themeLoaded } = useTheme();
     const [selectedTheme, setSelectedTheme] = useState(theme);
 
@@ -34,12 +32,12 @@ function App() {
         setSelectedTheme(theme);
     }, [theme, themeLoaded]);
 
-    console.log("selectedTheme", selectedTheme);
+    const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
     return (
         <>
             {themeLoaded && (
-                <GoogleOAuthProvider clientId="970275515164-i13mjqsbta13hg9paobo7bnt51ov4h32.apps.googleusercontent.com">
+                <GoogleOAuthProvider clientId={CLIENT_ID}>
                     <ThemeProvider theme={selectedTheme}>
                         <GlobalStyles />
                         <StyledApp>
