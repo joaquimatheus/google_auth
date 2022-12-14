@@ -129,7 +129,6 @@ const Register = () => {
                         const response = await ajaxAdapter.request("/google/auth", "post", data )
 
                         if (response.ok) { navigate("/welcome") }
-                        
                     }}
                     onError={() => {
                         console.log("Login Failed");
