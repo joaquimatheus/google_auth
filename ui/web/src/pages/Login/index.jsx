@@ -70,7 +70,6 @@ const Login = () => {
 
                         if (response.ok) { navigate("/welcome") }
                     }}
-                    }}
                     onError={() => {
                         console.log("login failed");
                     }}
