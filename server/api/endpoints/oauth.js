@@ -38,4 +38,30 @@ module.exports = function (app) {
             });
         })
     )
+
+    app.get(
+       "/api/v1/oauth",
+        buildHandler(async function (req, res) {
+            const allUsers = await db.oauth.findAll();
+
+            res.status(200).json({
+                data: { allUsers },
+                ok: true,
+            })
+        })
+    );
+
+    app.delete(
+        "/api/v1/oauth/:userId",
+        buildHandler(async function(req, res) {
+            const userId = req.string('userId');
+            const deletedUser = await db.oauth.deleteUser(userId)
+
+            res.status(200).json({
+                type: 'users',
+                data: userId,
+                ok: true
+            })
+        })
+    )
 }
