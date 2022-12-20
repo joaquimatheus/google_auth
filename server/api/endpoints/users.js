@@ -35,6 +35,50 @@ module.exports = function (app) {
         })
     );
 
+    app.get("/api/v1/users", 
+        express.json(), 
+        buildHandler(async function (req, res) {
+            const allUsers = await db.users.findAll()
+
+            res.status(200).json({
+                type: "users",
+                data: allUsers,
+                ok: true,
+            })
+        })
+    );
+
+    app.delete("/api/v1/users/:userId", 
+        buildHandler(async function (req, res) {
+            const userId = req.string('userId');
+            const deletedUser = await db.users.deleteUser(userId);
+
+            res.status(200).json({
+                type: 'users',
+                data: { userId, deletedUser },
+                ok: true,
+            })
+        })
+    );
+
+    app.put("/api/v1/users/:userId",
+        express.json(),
+        buildHandler(async function(req, res) {
+            const userId = req.string('userId');
+            const changes = req.arg('changes');
+
+            const updatedUser = await db.users.updateUser(changes, userId);
+
+            console.log(updatedUser);
+
+            res.status(200).json({
+                type: 'users',
+                data: { userId, changes, updatedUser },
+                ok: true,
+            })
+        })
+    );
+
     app.post(
         "/api/v1/users/login",
         express.json(),
@@ -78,7 +122,7 @@ module.exports = function (app) {
         "/api/v1/recover/validate",
         buildHandler(async function(req, res) {
             const token = req.query.token;
-1
+
             const isValid = await db.users.validateLoginToken(token);
 
             res.end(JSON.stringify({ ok: true }))
