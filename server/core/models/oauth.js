@@ -41,6 +41,24 @@ module.exports = (sequelize, DataTypes) => {
             return deleted;
         }
 
+        static async updateUser(changes, userId) {
+            const userExist = await this.getUserById(userId)
+            const { id } = userExist;
+
+            const updated = await OAuth.update(changes, { where: { id } });
+
+            return updated;
+        }
+
+        static async login(email) {
+            const user = await OAuth.findOne({ where: { email } });
+            if (!user) {
+                throw new Error(`User: ${email} not found!`);
+            }
+
+            return user;
+        }
+
         static associate(models) {
             // define association here
         }
