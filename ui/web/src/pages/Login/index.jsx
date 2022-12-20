@@ -66,9 +66,10 @@ const Login = () => {
                 <GoogleLogin
                     onSuccess={ async (credentialResponse) => {
                         const data = { token: credentialResponse.credential };
-                        const response = await ajaxAdapter.request("/google/auth", "post", data )
+                        const response = await ajaxAdapter.request("/oauth/google/login", "post", data);
+                        console.log(response);
 
-                        if (response.ok) { navigate("/welcome") }
+                        if (response.ok) { navigate("/welcome") };
                     }}
                     onError={() => {
                         console.log("login failed");
