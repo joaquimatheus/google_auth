@@ -48,3 +48,5 @@ function listen() {
 require('./routes')(app);
 
 listen();
+
+module.exports = app;
