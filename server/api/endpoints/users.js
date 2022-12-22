@@ -114,7 +114,10 @@ module.exports = function (app) {
             // -> Send an email to user
             // /recover-password?token=${user.login_token};
 
-            res.end(JSON.stringify({ ok: true, login_token: user }))
+            res.status(200).json({
+                login_token: user,
+                ok: true
+            })
         })
     );
 
