@@ -115,13 +115,86 @@ describe('User API', () => {
         delete data.password;
         delete data.username;
 
-        console.log(data);
-
         return await request(apiUrl)
             .post('/api/v1/recover/forget-password')
             .expect(200)
             .send(data)
             .then(res => {
+                expect(res.body.ok).toEqual(true)
+                expect(res.body).toHaveProperty('login_token')
+            })
+    })
+
+    it('shoud validate the token', async () => {
+        const username = faker.name.firstName().toLowerCase();
+        const email    = faker.internet.email(username);
+        const password = faker.internet.password()
+
+        const data = { username, email, password };
+
+        const newUser = await fetch(`${apiUrl}/api/v1/users`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+
+        delete data.password;
+        delete data.username;
+
+        const responseToken = await fetch(`${apiUrl}/api/v1/recover/forget-password`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+
+        const dataToken = await responseToken.json();
+        const { login_token } = dataToken;
+
+        return await request(apiUrl)
+            .get(`/api/v1/recover/validate?token=${login_token}`)
+            .expect(200)
+            .then( res => {
+                expect(res.body.ok).toEqual(true)
+            })
+    })
+
+    it('shoud set new password', async () => {
+        const username = faker.name.firstName().toLowerCase();
+        const email    = faker.internet.email(username);
+        const password = faker.internet.password()
+
+        const data = { username, email, password };
+
+        const newUser = await fetch(`${apiUrl}/api/v1/users`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+
+        delete data.password;
+        delete data.username;
+
+        const responseToken = await fetch(`${apiUrl}/api/v1/recover/forget-password`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+
+        const dataToken = await responseToken.json();
+        const { login_token } = dataToken;
+
+        const validateToken = await fetch(`${apiUrl}/api/v1/recover/validate?token=${login_token}`, { method: "GET" })
+
+        data.password = password; 
+        data.token = login_token;
+
+        delete data.email;
+
+        return await request(apiUrl)
+            .post(`/api/v1/recover/set-new-password`)
+            .expect(200)
+            .send(data)
+            .then( res => {
                 expect(res.body.ok).toEqual(true)
             })
     })
