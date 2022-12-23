@@ -98,4 +98,31 @@ describe('User API', () => {
                 expect(res.body.ok).toEqual(true)
             })
     })
+
+    it('shoud forget-password', async () => {
+        const username = faker.name.firstName().toLowerCase();
+        const email    = faker.internet.email(username);
+        const password = faker.internet.password()
+
+        const data = { username, email, password };
+
+        const response = await fetch(`${apiUrl}/api/v1/users`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        })
+
+        delete data.password;
+        delete data.username;
+
+        console.log(data);
+
+        return await request(apiUrl)
+            .post('/api/v1/recover/forget-password')
+            .expect(200)
+            .send(data)
+            .then(res => {
+                expect(res.body.ok).toEqual(true)
+            })
+    })
 })
