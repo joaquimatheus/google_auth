@@ -129,6 +129,7 @@ module.exports = (sequelize, DataTypes) => {
             email: DataTypes.STRING,
             password: DataTypes.TEXT,
             login_token: DataTypes.TEXT,
+            avatar_img: DataTypes.TEXT,
         },
         {
             sequelize,

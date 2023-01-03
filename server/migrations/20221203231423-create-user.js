@@ -25,6 +25,9 @@ module.exports = {
                 type: Sequelize.TEXT,
                 unique: true,
             },
+            avatar_img: {
+                type: Sequelize.TEXT,
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
