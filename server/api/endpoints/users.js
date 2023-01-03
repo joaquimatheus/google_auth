@@ -69,8 +69,6 @@ module.exports = function (app) {
 
             const updatedUser = await db.users.updateUser(changes, userId);
 
-            console.log(updatedUser);
-
             res.status(200).json({
                 type: 'users',
                 data: { userId, changes, updatedUser },
@@ -114,7 +112,10 @@ module.exports = function (app) {
             // -> Send an email to user
             // /recover-password?token=${user.login_token};
 
-            res.end(JSON.stringify({ ok: true, login_token: user }))
+            res.status(200).json({
+                login_token: user,
+                ok: true
+            })
         })
     );
 
@@ -125,7 +126,9 @@ module.exports = function (app) {
 
             const isValid = await db.users.validateLoginToken(token);
 
-            res.end(JSON.stringify({ ok: true }))
+            res.status(200).json({
+                ok: true
+            })
         })
     )
 
@@ -137,7 +140,9 @@ module.exports = function (app) {
 
             db.users.setNewPassword(token, password);
 
-            res.end(JSON.stringify({ ok: true }));
+            res.status(200).json({
+                ok: true
+            })
         })
     )
 };
