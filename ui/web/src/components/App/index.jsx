@@ -14,6 +14,7 @@ import Register from '../../pages/Register';
 import Welcome from '../../pages/Welcome';
 import ForgetPassword from '../../pages/ForgetPassword';
 import RecoverPassword from '../../pages/RecoverPassword';
+import Chat from "../../pages/Chat";
 
 import ThemePicker from "../ThemePicker";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -54,6 +55,7 @@ function App() {
                                 <Route path="/signin" element={<Login />} />
                                 <Route path="/signup" element={ <Register /> }/>
                                 <Route path="/welcome" element={ <Welcome /> }/>
+                                <Route path="/chat" element={ <Chat chatAnimationDelay={600} /> }/>
                             </Routes>
                         </StyledApp>
                     </ThemeProvider>
