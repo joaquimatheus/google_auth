@@ -18,7 +18,7 @@ const ChatType = {
 const TRANSITION_DELAY = 100
 
 const Chat = ({ chatAnimationDelay }) => {
-    const [chats, setChats] = useState(defaultChats)
+    const [chats, setChats] = useState("")
     const [animate, setAnimate] = useState(false)
 
     const inputRef = createRef()
@@ -57,7 +57,7 @@ const Chat = ({ chatAnimationDelay }) => {
             {!loggedIn && <Navigate to="/" replace />}
             <TransitionGroup component="ul">
                 <>
-                    {chats.map((chat, index) => (
+                    {chats && chats.map((chat, index) => (
                         <CSSTransition
                             in={animate}
                             key={chat.id}
