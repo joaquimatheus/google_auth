@@ -15,7 +15,8 @@ export const StyledAvatarSet = styled.div`
     
     .title-container {
         h1 {
-            color: var(--secondary);
+            --switch: calc((var(--secondary-val) - var(--threshold)) * -100%);
+            color: hsla(0,0%,var(--switch),70%);
         }
     }
     .avatars {
