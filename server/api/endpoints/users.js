@@ -145,4 +145,25 @@ module.exports = function (app) {
             })
         })
     )
+
+    app.put('/api/v1/users/avatar/:userId', 
+        express.json(), 
+        buildHandler(async function(req, res) {
+            const avatar_img = req.string('avatar_img');
+            const userId = req.string('userId');
+            const changes = { changes: avatar_img }
+
+            await db.users.updateUser(changes, userId);
+            const user = await db.users.getUserById(userId);
+
+            console.log(user);
+
+            const token = jwt.sign(user.dataValues, HTTP_SECRET);
+
+            res.status(200).json({
+                ok: true,
+                token
+            })
+        })
+    )
 };
