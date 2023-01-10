@@ -1,34 +1,32 @@
-const { Model } = require("sequelize");
+const { Model, Op } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
     class Messages extends Model {
         static async getMessages(from, to) {
-            const messages = await Message.findAll({
+            const { sender } = from;
+
+            const messages = await Messages.findAll({
                 where: {
-                    users: {
-                        $contains: from,
-                    },
-                    users: {
-                        $contains: to,
-                    },
+                    [Op.all]: [[from.toString(), to.toString()]],
                 },
                 order: [["updated_at", "ASC"]],
             });
 
-            const projectedMessages = messages.map((msg) => {
-                return {
-                    fromSelf: msg.sender.toString() === from,
-                    message: msg.message.text,
-                };
-            });
+            const projectedMessages = messages.map((msg) => ({
+                fromSelf: msg.sender.toString() === from,
+                message: msg.message.text,
+            }));
 
             return projectedMessages;
         }
 
         static async addMessage(from, to, msg) {
-            const data = await Message.create({
+            const { sender } = from;
+
+            const data = await Messages.create({
                 message_text: msg,
-                users: {from, to},
-                sender_id: from,
+                users: [ sender, to ],
+                sender_id: from.id,
             });
 
             return data;
